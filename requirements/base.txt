@@ -1,0 +1,4 @@
+flup6==1.1.1
+Flask==0.11.1
+mysqlclient==1.3.9
+pygraphviz==1.3.1

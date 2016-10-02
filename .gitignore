@@ -2,5 +2,5 @@
 *.pyc
 graph.json
 web_config.cfg
-lighttp.conf
 mapper-confs/
+*.idea
