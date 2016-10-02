@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from web.graph_data import insert_graph_data
+from raptiformica_map.graph_data import insert_graph_data
 
 app = Flask(__name__)
 app.config.from_pyfile('web_config.cfg')
@@ -24,7 +24,7 @@ def page_network():
 
 @app.route('/send_graph', methods=['POST'])
 def page_send_graph():
-    print("Receiving graph from {}").format(request.remote_addr)
+    print("Receiving graph from {}".format(request.remote_addr))
 
     version = int(request.form.get('version', '1'))
     ret = insert_graph_data(

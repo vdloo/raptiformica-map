@@ -62,11 +62,6 @@ li {
 	background: #EEE;
 }
 
-
-
-
-
-
 #general-info {
 	position: absolute;
 	bottom: 0;
@@ -76,7 +71,6 @@ li {
 	line-height: 150%;
 	z-index: 999;
 }
-
 
 #sidebar {
 	padding: 20px 20px;

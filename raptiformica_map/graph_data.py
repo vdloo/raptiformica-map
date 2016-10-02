@@ -1,8 +1,8 @@
 import json
 from contextlib import suppress
 
-from web.database import NodeDB
-from web.graph import Node, Edge
+from raptiformica_map.database import NodeDB
+from raptiformica_map.graph import Node, Edge
 import traceback
 import time
 

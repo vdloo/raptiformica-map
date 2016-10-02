@@ -1,5 +1,5 @@
 import MySQLdb
-from web.graph import Node, Edge
+from raptiformica_map.graph import Node, Edge
 import time
 
 

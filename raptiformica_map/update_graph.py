@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from flask import Config
-from web.database import NodeDB
-from web import graph_plotter
+from raptiformica_map.database import NodeDB
+from raptiformica_map import graph_plotter
 
 NODE_TIME_LIMIT = 60 * 60 * 3  # 3 hours
 EDGE_TIME_LIMIT = 60 * 60 * 24 * 7  # 7 days

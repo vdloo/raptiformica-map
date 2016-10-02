@@ -26,7 +26,7 @@ test_script="
     echo 'Running raptiformica-map unit tests';
     nosetests --processes=$numprocs;
     echo 'Checking PEP8';
-    echo web scripts | xargs autopep8 -r --diff;
+    echo raptiformica_map scripts | xargs autopep8 -r --diff;
 "
 
 if [ -z $RUN_ONCE ]; then
