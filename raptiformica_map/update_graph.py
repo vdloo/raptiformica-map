@@ -4,7 +4,7 @@ from os.path import join, dirname, realpath
 from raptiformica_map.database import get_node_db_driver
 from raptiformica_map import graph_plotter
 
-PROJECT_DIR = join(dirname(dirname(dirname(realpath(__file__)))))
+PROJECT_DIR = join((dirname(realpath(__file__))))
 NODE_TIME_LIMIT = 60 * 60 * 3  # 3 hours
 EDGE_TIME_LIMIT = 60 * 60 * 24 * 7  # 7 days
 
