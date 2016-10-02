@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 from flask import Config
+from os.path import join, dirname, realpath
 from raptiformica_map.database import get_node_db_driver
 from raptiformica_map import graph_plotter
 
+PROJECT_DIR = join(dirname(dirname(dirname(realpath(__file__)))))
 NODE_TIME_LIMIT = 60 * 60 * 3  # 3 hours
 EDGE_TIME_LIMIT = 60 * 60 * 24 * 7  # 7 days
 
@@ -19,7 +21,7 @@ def generate_graph(time_limit=NODE_TIME_LIMIT):
 
 
 def load_graph_from_db(time_limit):
-    config = Config('./')
+    config = Config(PROJECT_DIR)
     config.from_pyfile('settings.cfg')
 
     with get_node_db_driver(config) as db:
