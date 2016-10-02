@@ -4,7 +4,7 @@ from os.path import join, dirname, realpath
 from raptiformica_map.database import get_node_db_driver
 from raptiformica_map import graph_plotter
 
-PROJECT_DIR = join((dirname(realpath(__file__))))
+PROJECT_DIR = join(dirname(realpath(__file__)))
 NODE_TIME_LIMIT = 60 * 60 * 3  # 3 hours
 EDGE_TIME_LIMIT = 60 * 60 * 24 * 7  # 7 days
 
@@ -16,7 +16,8 @@ def generate_graph(time_limit=NODE_TIME_LIMIT):
     graph = graph_plotter.position_nodes(nodes, edges)
     json = graph_plotter.get_graph_json(graph)
 
-    with open('static/graph.json', 'w') as f:
+    graph_path = join(PROJECT_DIR, 'static/graph.json')
+    with open(graph_path, 'w+') as f:
         f.write(json)
 
 

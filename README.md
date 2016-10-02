@@ -15,6 +15,13 @@ And install the pip requirements in a virtualenv
 ```
 mkvirtualenv -a $(pwd) -p /usr/bin/python3 raptiformica-map
 pip install -r requirements/base.txt
+
+```
+
+# if you get a `undefined symbol: Agundirected` error, run this:
+```
+pip install pygraphviz --install-option="--include-path=/usr/include/graphviz" --install-option="--library-path=/usr/lib/graphviz/" 
+# see https://github.com/pygraphviz/pygraphviz/issues/71
 ```
 
 

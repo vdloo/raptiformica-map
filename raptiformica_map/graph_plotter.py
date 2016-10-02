@@ -42,7 +42,7 @@ def canonalize_ip(ip):
 
 
 def load_db():
-    with open('nodedb/nodes') as f:
+    with open('nodes', 'w+') as f:
         return dict(
             [(canonalize_ip(v[0]), v[1]) for v in
              [l.split(None)[:2] for l in f.readlines()]
@@ -56,7 +56,7 @@ def get_graph_json(G):
         neighbors = len(G.neighbors(n))
         if neighbors > max_neighbors:
             max_neighbors = neighbors
-    print('Max neighbors: {}').format(max_neighbors)
+    print('Max neighbors: {}'.format(max_neighbors or 0))
 
     out_data = {
         'created': int(time.time()),
@@ -111,4 +111,4 @@ def _gradient_color(ratio, colors):
     g = a[1] + (b[1] - a[1]) * ratio
     b = a[2] + (b[2] - a[2]) * ratio
 
-    return '#{:02X}{:02X}{:02X}'.format(r, g, b)
+    return '#{:02X}{:02X}{:02X}'.format(*map(int, (r, g, b)))

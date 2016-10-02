@@ -112,7 +112,7 @@ class NodeDB(object):
         nodes = dict()
         since = int(time.time() - time_limit)
         for ip in ips:
-            if data[key_path + ip + "/last_seen"] > since:
+            if int(data[key_path + ip + "/last_seen"]) > since:
                 nodes[ip] = Node(
                     ip,
                     data[key_path + ip + "/version"],
@@ -137,14 +137,14 @@ class NodeDB(object):
         edges = list()
         since = int(time.time() - time_limit)
         for ip_pair_hash in ip_pair_hashes:
-            if data[key_path + ip_pair_hash + "/last_seen"] > since:
+            if int(data[key_path + ip_pair_hash + "/last_seen"]) > since:
                 edges.append(
                     Edge(
-                        data[key_path + ip_pair_hash + "/from_ip"],
-                        data[key_path + ip_pair_hash + "/to_ip"]
+                        nodes[data[key_path + ip_pair_hash + "/from_ip"]],
+                        nodes[data[key_path + ip_pair_hash + "/to_ip"]]
                     )
                 )
-        return nodes
+        return edges
 
     def get_graph(self, time_limit):
         nodes = self.get_nodes(time_limit)
