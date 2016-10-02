@@ -8,7 +8,7 @@ High-available web service that visualizes a raptiformica cluster
 
 Make sure you have the system requirements
 ```
-apt-get install python3-dev libmysqlclient-dev graphviz libgraphviz-dev
+apt-get install python3-dev libmysqlclient-dev graphviz libgraphviz-dev pkg-config
 ```
 
 And install the pip requirements in a virtualenv
@@ -27,6 +27,6 @@ pip install -r requirements/development.txt
 ```
 
 
-### acknowledgements
+### Acknowledgements
 
 This repository is an adaptation of [fc00.org](https://github.com/zielmicha/fc00.org)

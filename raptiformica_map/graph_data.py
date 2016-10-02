@@ -1,7 +1,7 @@
 import json
 from contextlib import suppress
 
-from raptiformica_map.database import NodeDB
+from raptiformica_map.database import get_node_db_driver
 from raptiformica_map.graph import Node, Edge
 import traceback
 import time
@@ -45,7 +45,7 @@ def insert_graph_data(config, data, ip, version):
     uploaded_by = ip
 
     try:
-        with NodeDB(config) as db:
+        with get_node_db_driver(config) as db:
             db.insert_graph(nodes, edges, uploaded_by)
     except Exception:
         traceback.print_exc()
