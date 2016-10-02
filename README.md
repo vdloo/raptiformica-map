@@ -1,7 +1,7 @@
 raptiformica-map
 ================
 
-High-available web service that visualizes a raptiformica cluster
+High-available web service that visualizes a [raptiformica](https://github.com/vdloo/raptiformica) cluster
 
 &nbsp;  
 
@@ -24,7 +24,7 @@ mkvirtualenv -a $(pwd) -p /usr/bin/python3 raptiformica-map
 pip install -r requirements/base.txt
 ```
 
-if you get a `undefined symbol: Agundirected` error, run this:
+If you get a `undefined symbol: Agundirected` error, run this:
 ```
 # see https://github.com/pygraphviz/pygraphviz/issues/71
 pip install pygraphviz --install-option="--include-path=/usr/include/graphviz" --install-option="--library-path=/usr/lib/graphviz/" 
