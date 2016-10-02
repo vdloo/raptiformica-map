@@ -1,0 +1,32 @@
+#!/usr/bin/env python
+from flask import Config
+from web.database import NodeDB
+from web import graph_plotter
+
+NODE_TIME_LIMIT = 60 * 60 * 3  # 3 hours
+EDGE_TIME_LIMIT = 60 * 60 * 24 * 7  # 7 days
+
+
+def generate_graph(time_limit=NODE_TIME_LIMIT):
+    nodes, edges = load_graph_from_db(time_limit)
+    print('{} nodes, {} edges'.format(len(nodes), len(edges)))
+
+    graph = graph_plotter.position_nodes(nodes, edges)
+    json = graph_plotter.get_graph_json(graph)
+
+    with open('static/graph.json', 'w') as f:
+        f.write(json)
+
+
+def load_graph_from_db(time_limit):
+    config = Config('./')
+    config.from_pyfile('web_config.cfg')
+
+    with NodeDB(config) as db:
+        nodes = db.get_nodes(time_limit)
+        edges = db.get_edges(nodes, EDGE_TIME_LIMIT)
+        return nodes, edges
+
+
+if __name__ == '__main__':
+    generate_graph()

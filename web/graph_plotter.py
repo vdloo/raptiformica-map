@@ -4,18 +4,23 @@ import json
 import networkx as nx
 from networkx.algorithms import centrality
 
+
 def position_nodes(nodes, edges):
-    G = pgv.AGraph(strict=True, directed=False, size='10!')
+    graph = pgv.AGraph(strict=True, directed=False, size='10!')
 
     for n in nodes.values():
-        G.add_node(n.ip, label=n.label, version=n.version)
+        graph.add_node(n.ip, label=n.label, version=n.version)
 
     for e in edges:
-        G.add_edge(e.a.ip, e.b.ip, len=1.0)
+        graph.add_edge(e.a.ip, e.b.ip, len=1.0)
 
-    G.layout(prog='neato', args='-Gepsilon=0.0001 -Gmaxiter=100000')
+    graph.layout(
+        prog='neato',
+        args='-Gepsilon=0.0001 -Gmaxiter=100000'
+    )
 
-    return G
+    return graph
+
 
 def compute_betweenness(G):
     ng = nx.Graph()
@@ -31,12 +36,19 @@ def compute_betweenness(G):
 
     return c
 
+
 def canonalize_ip(ip):
-    return ':'.join( i.rjust(4, '0') for i in ip.split(':') )
+    return ':'.join(i.rjust(4, '0') for i in ip.split(':'))
+
 
 def load_db():
     with open('nodedb/nodes') as f:
-        return dict([ (canonalize_ip(v[0]), v[1]) for v in [ l.split(None)[:2] for l in f.readlines() ] if len(v) > 1 ])
+        return dict(
+            [(canonalize_ip(v[0]), v[1]) for v in
+             [l.split(None)[:2] for l in f.readlines()]
+             if len(v) > 1]
+        )
+
 
 def get_graph_json(G):
     max_neighbors = 1
@@ -44,7 +56,7 @@ def get_graph_json(G):
         neighbors = len(G.neighbors(n))
         if neighbors > max_neighbors:
             max_neighbors = neighbors
-    print 'Max neighbors: %d' % max_neighbors
+    print('Max neighbors: {}').format(max_neighbors)\
 
     out_data = {
         'created': int(time.time()),
@@ -70,7 +82,9 @@ def get_graph_json(G):
             'version': n.attr['version'],
             'x': float(pos[0]),
             'y': float(pos[1]),
-            'color': _gradient_color(neighbor_ratio, [(100, 100, 100), (0, 0, 0)]),
+            'color': _gradient_color(
+                neighbor_ratio, [(100, 100, 100), (0, 0, 0)]
+            ),
             'size': size,
             'centrality': '%.4f' % centrality
         })
@@ -97,4 +111,4 @@ def _gradient_color(ratio, colors):
     g = a[1] + (b[1] - a[1]) * ratio
     b = a[2] + (b[2] - a[2]) * ratio
 
-    return '#%02x%02x%02x' % (r, g, b)
+    return '#{:02X}{:02X}{:02X}'.format(r, g, b)

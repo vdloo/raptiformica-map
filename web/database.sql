@@ -1,5 +1,5 @@
-CREATE DATABASE  IF NOT EXISTS `cjdns`;
-USE `cjdns`;
+CREATE DATABASE  IF NOT EXISTS `raptiformica_map`;
+USE `raptiformica_map`;
 
 
 --
