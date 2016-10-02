@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 from raptiformica_map.graph_data import insert_graph_data
 
 app = Flask(__name__)
-app.config.from_pyfile('web_config.cfg')
+app.config.from_pyfile('settings.cfg')
 
 
 def get_ip():
@@ -36,4 +36,4 @@ def page_send_graph():
     return 'Error: {}'.format(ret) if ret else 'OK'
 
 if __name__ == '__main__':
-    app.run(host='[::1]', port=3000)
+    app.run(host='::1', port=3000)

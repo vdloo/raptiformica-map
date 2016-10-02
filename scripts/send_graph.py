@@ -18,7 +18,7 @@ import queue
 import threading
 
 # URL where data is sent
-url = 'http://[::1]/send_graph'
+url = 'http://[::1]:3000/send_graph'
 
 # ----------------------
 # RPC connection details

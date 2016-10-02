@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from flask import Config
-from raptiformica_map.database import NodeDB
+from raptiformica_map.database import get_node_db_driver
 from raptiformica_map import graph_plotter
 
 NODE_TIME_LIMIT = 60 * 60 * 3  # 3 hours
@@ -20,9 +20,9 @@ def generate_graph(time_limit=NODE_TIME_LIMIT):
 
 def load_graph_from_db(time_limit):
     config = Config('./')
-    config.from_pyfile('web_config.cfg')
+    config.from_pyfile('settings.cfg')
 
-    with NodeDB(config) as db:
+    with get_node_db_driver(config) as db:
         nodes = db.get_nodes(time_limit)
         edges = db.get_edges(nodes, EDGE_TIME_LIMIT)
         return nodes, edges

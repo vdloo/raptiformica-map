@@ -56,7 +56,7 @@ def get_graph_json(G):
         neighbors = len(G.neighbors(n))
         if neighbors > max_neighbors:
             max_neighbors = neighbors
-    print('Max neighbors: {}').format(max_neighbors)\
+    print('Max neighbors: {}').format(max_neighbors)
 
     out_data = {
         'created': int(time.time()),

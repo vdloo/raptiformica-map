@@ -3,7 +3,7 @@ from raptiformica_map.graph import Node, Edge
 import time
 
 
-class NodeDB:
+class NodeDB(object):
 
     def __init__(self, config):
         self.con = MySQLdb.connect(
@@ -43,7 +43,7 @@ class NodeDB:
         )
 
     def insert_graph(self, nodes, edges, uploaded_by):
-        for n in nodes.itervalues():
+        for n in nodes.values():
             self.insert_node(n)
 
         for e in edges:
