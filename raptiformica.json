@@ -1,0 +1,12 @@
+
+{
+  "raptiformica_api_version": "0.1",
+  "server": {
+    "headless": {
+      "name": "raptiformica_map",
+      "source": "https://github.com/vdloo/raptiformica-map",
+      "bootstrap": "./deploy.sh"
+    }
+  }
+}
+
