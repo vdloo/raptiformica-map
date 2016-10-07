@@ -15,6 +15,7 @@
     - graphviz
     - libgraphviz-dev
     - pkg-config
+    - screen
     when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
   - name: Ensure Archlinux dependencies are installed
@@ -26,6 +27,7 @@
     - libmysqlclient
     - graphviz
     - pkg-config
+    - screen
     when: ansible_distribution == 'Archlinux'
 
   - name: Install the raptiformica-map repository
