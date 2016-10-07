@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from raptiformica_map.graph_data import insert_graph_data
+from raptiformica_map.update_graph import generate_graph
 
 app = Flask(__name__)
 app.config.from_pyfile('settings.cfg')
@@ -33,6 +34,7 @@ def page_send_graph():
         data=request.form['data'],
         version=version
     )
+    generate_graph()  # re-generate the graph with the new data
     return 'Error: {}'.format(ret) if ret else 'OK'
 
 if __name__ == '__main__':
