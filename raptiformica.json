@@ -14,7 +14,7 @@
         "cluster_change": {
           "update_node_database": {
             "predicate": "ps aux | grep -q /usr/etc/[r]aptiformica_map/raptiformica_map/web.py",
-            "command": "sleep $[($RANDOM%10)]; PYTHONPATH=/usr/etc/raptiformica_map /usr/etc/raptiformica_map/venv/bin/python3 /usr/etc/raptiformica_map/scripts/send_graph.py"
+            "command": "sleep \$\[\(\$RANDOM\%10\)\]; export PYTHONPATH=/usr/etc/raptiformica_map; /usr/etc/raptiformica_map/venv/bin/python3 /usr/etc/raptiformica_map/scripts/send_graph.py"
           }
         }
       }
