@@ -78,6 +78,19 @@ function drawNetwork() {
     }
 }
 
+function drawZoom(mx, my, ratio) {
+    zoom *= ratio;
+
+    for (var i = 0; i < nodes.length; ++i) {
+        var node = nodes[i];
+        node.x = (node.x - mx) * ratio + mx;
+        node.y = (node.y - my) * ratio + my;
+        node.radius = (node.size) * zoom;
+    }
+
+    drawNetwork();
+}
+
 function getNodeAt(x, y) {
     x -= mapOffset.x;
     y -= mapOffset.y;
@@ -190,7 +203,6 @@ function mousePos(e) {
 $(document).ready(function() {
     canvas = document.getElementById('map');
     ctx = canvas.getContext('2d');
-    mapOffset = {x: $(canvas).width() / 3, y: $(canvas).height() / 3};
     updateCanvasSize();
 
 
@@ -255,7 +267,7 @@ $(document).ready(function() {
             if (node) selectNode(node, false);
         }
 
-        drawNetwork();
+        drawZoom(0, 0, 6);
 
         $(window).resize(function() {
             updateCanvasSize();
@@ -377,7 +389,6 @@ $(document).ready(function() {
         return false;
     });
 
-
     function handleScroll(e) {
         var mouse = mousePos(e);
         var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
@@ -385,17 +396,8 @@ $(document).ready(function() {
         var ratio = (delta < 0) ? (3 / 4) :  1 + (1 / 3);
         var mx = mouse.x - mapOffset.x;
         var my = mouse.y - mapOffset.y;
+        drawZoom(mx, my, ratio);
 
-        zoom *= ratio;
-
-        for (var i = 0; i < nodes.length; ++i) {
-            var node = nodes[i];
-            node.x = (node.x - mx) * ratio + mx;
-            node.y = (node.y - my) * ratio + my;
-            node.radius = (node.size) * zoom;
-        }
-
-        drawNetwork();
     }
     canvas.addEventListener("mousewheel", handleScroll, false);
     canvas.addEventListener("DOMMouseScroll", handleScroll, false);
