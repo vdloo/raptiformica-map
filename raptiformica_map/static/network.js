@@ -33,14 +33,10 @@ function drawLine(ctx, x1, y1, x2, y2, color) {
 }
 
 function drawText(ctx, x, y, text, color, font) {
-    // ctx.save();
-    // ctx.translate(x, y);
-    // ctx.rotate(Math.PI/4);
     ctx.fillStyle = color;
     ctx.font = font;
     ctx.textAlign = 'center';
     ctx.fillText(text, x, y);
-    // ctx.restore();
 }
 
 function drawNetwork() {
@@ -133,12 +129,8 @@ function selectNode(node, redraw) {
 function markPeers(node, depth) {
     node.depth = depth;
 
-    // var colors = ['#000000', '#333333', '#555555', '#777777', '#999999', '#BBBBBB', '#DDDDDD'];
-    // var colors = ['#000000', '#29BBFF', '#09E844', '#FFBD0F', '#FF5E14', '#FF3C14', '#FF7357', '#FF9782', '#FFC8BD', '#FFE6E0'];
     var colors = ['#000000', '#096EE8', '#09E8B8', '#36E809', '#ADE809', '#E8B809', '#E87509', '#E83A09', '#E86946', '#E8AC9B', '#E8C9C1'];
     var txtCol = ['#000000', '#032247', '#034537', '#0E3D02', '#354703', '#403203', '#3D1F02', '#3B0E02', '#3B0E02', '#3B0E02', '#3B0E02'];
-    // var colors = ['#000000', '#064F8F', '#068F81', '#068F38', '#218F06', '#6F8F06', '#8F7806', '#8F5106'];
-    // var colors = ['#FFFFFF', '#29BBFF', '#17FF54', '#FFBD0F', '#FF3C14', '#590409'];
     node.color = (depth >= colors.length) ? '#FFFFFF' : colors[depth];
     node.textColor = (depth >= txtCol.length) ? '#FFFFFF' : txtCol[depth];
 
@@ -178,7 +170,6 @@ function showNodeInfo(node) {
         '<strong>Peers:</strong> ' + node.peers.length + '<br>' +
         '<strong>Centrality:</strong> ' + node.centrality + '<br>' +
         '<table>' +
-        // '<tr><td></td><td><strong>Their peers #</strong></td></tr>' +
         peers.map(function (n) {
             return '<tr>' +
                 '<td><a href="#' + n.id + '" class="tt">' + n.label + '</a></td>' +
@@ -199,6 +190,7 @@ function mousePos(e) {
 $(document).ready(function() {
     canvas = document.getElementById('map');
     ctx = canvas.getContext('2d');
+    mapOffset = {x: $(canvas).width() / 3, y: $(canvas).height() / 3};
     updateCanvasSize();
 
 
@@ -217,7 +209,6 @@ $(document).ready(function() {
             node.edges = [];
             node.peers = [];
             node.depth = 0xFFFF;
-            // node.color = '#000';
             node.originalColor = node.color;
             node.textColor = node.color;
         }
@@ -230,7 +221,6 @@ $(document).ready(function() {
             for (var n = 0; n < nodes.length; ++n) {
                 if (nodes[n].id == edge.sourceID) {
                     edge.sourceNode = nodes[n];
-                    // edge.sourceNode.edges.append(edge);
                 }
                 else if (nodes[n].id == edge.targetID)
                     edge.targetNode = nodes[n];
@@ -402,9 +392,6 @@ $(document).ready(function() {
             var node = nodes[i];
             node.x = (node.x - mx) * ratio + mx;
             node.y = (node.y - my) * ratio + my;
-            // node.x *= ratio;
-            // node.y *= ratio;
-            // node.radius *= ratio;
             node.radius = (node.size) * zoom;
         }
 
