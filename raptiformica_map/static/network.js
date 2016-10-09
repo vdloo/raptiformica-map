@@ -267,7 +267,7 @@ $(document).ready(function() {
             if (node) selectNode(node, false);
         }
 
-        drawZoom(0, 0, 6);
+        drawZoom(0, 0, 4);
 
         $(window).resize(function() {
             updateCanvasSize();
