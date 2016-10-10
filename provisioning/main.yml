@@ -76,6 +76,7 @@
     lineinfile:
       dest: /etc/dnsmasq.d/10-consul
       line: server=/consul/127.0.0.1#8600
+      state: present
 
   - name: Kill the service if it is running an old release
     # brackets so pkill does not terminate its own process
