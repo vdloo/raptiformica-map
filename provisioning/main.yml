@@ -89,11 +89,6 @@
       /tmp/resolv.conf &&
       cat /tmp/resolv.conf > /etc/resolv.conf)
 
-    lineinfile: dest=/etc/resolv.conf
-                regexp='^nameserver 127.0.0.1'
-                insertbefore=BOF
-                line='nameserver 127.0.0.1'
-
   - name: check if resolvconf head file exists on the system
     stat: path=/etc/resolvconf/resolv.conf.d/head
     register: resolv_conf_head
