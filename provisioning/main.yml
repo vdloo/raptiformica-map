@@ -16,6 +16,7 @@
     - libgraphviz-dev
     - pkg-config
     - screen
+    - dnsmasq
     when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
   - name: Ensure Archlinux dependencies are installed
@@ -28,6 +29,7 @@
     - graphviz
     - pkg-config
     - screen
+    - dnsmasq
     when: ansible_distribution == 'Archlinux'
 
   - name: Install the raptiformica-map repository
@@ -70,6 +72,12 @@
       --exists-action=w
     when: ansible_distribution != 'Ubuntu'
 
+  - name: Configure dnsmasq for consul
+    lineinfile:
+      dest: /etc/dnsmasq.d/10-consul
+      line: server=/consul/127.0.0.1#8600
+      state: present
+
   - name: Kill the service if it is running an old release
     # brackets so pkill does not terminate its own process
     shell: pkill -f [r]aptiformica_map || /bin/true
@@ -82,3 +90,10 @@
       bash -c 'PYTHONPATH=/usr/etc/raptiformica_map/
       /usr/etc/raptiformica_map/venv/bin/python3
       /usr/etc/raptiformica_map/raptiformica_map/web.py'
+
+  # todo: refactor this to a supervisord script, not all hosts have an init system
+  - name: Ensure detached dnsmasq is running
+    shell: >
+      screen -ls | grep -q dnsmasq ||
+      screen -S dnsmasq -d -m
+      /usr/sbin/dnsmasq --no-daemon
