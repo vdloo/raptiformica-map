@@ -79,6 +79,11 @@
       state: present
       create: yes
 
+  - name: Ensure consul service file for the webservice
+    template:
+      src=consul_service_configuration.json
+      dest=/etc/consul.d/raptiformica_map.json
+
   - name: Kill the service if it is running an old release
     # brackets so pkill does not terminate its own process
     shell: pkill -f [r]aptiformica_map || /bin/true
