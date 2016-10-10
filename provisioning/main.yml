@@ -79,10 +79,22 @@
       state: present
       create: yes
 
+  - name: Ensure consul config directory exists
+    file: path=/etc/consul.d state=directory
+
   - name: Ensure consul service file for the webservice
     template:
       src=consul_service_configuration.json
       dest=/etc/consul.d/raptiformica_map.json
+    register: consul_service_registered
+
+  - name: Reload consul agent if it is running
+    shell: >
+      pkill --signal SIGHUP
+      -f '^/usr/bin/consul agent
+      -config-dir /etc/consul.d/' ||
+      /bin/true
+    when: consul_service_registered.changed
 
   - name: Kill the service if it is running an old release
     # brackets so pkill does not terminate its own process
