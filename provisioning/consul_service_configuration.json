@@ -1,0 +1,7 @@
+{
+  "service": 
+  {
+    "name": "raptiformica_map", 
+    "port": 3000
+  }
+}
