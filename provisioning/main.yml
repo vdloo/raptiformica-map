@@ -80,10 +80,14 @@
       create: yes
 
   - name: set 127.0.0.1 as first nameserver in resolv.conf
-    lineinfile: dest=/etc/resolv.conf
-                regexp='^nameserver 127.0.0.1'
-                insertbefore=BOF
-                line='nameserver 127.0.0.1'
+    # can't do atomic rename in Docker because /etc/resolv.conf is mounted
+    # and the inode will change if we do lineinfile or sed -i, see
+    # https://forums.docker.com/t/container-losing-volume-etc-hosts-when-file-is-edited/10038/3
+    shell: >
+      grep '127.0.0.1' /etc/resolv.conf ||
+      (sed '1s/^/nameserver 127.0.0.1\n/' /etc/resolv.conf >
+      /tmp/resolv.conf &&
+      cat /tmp/resolv.conf > /etc/resolv.conf)
 
   - name: check if resolvconf head file exists on the system
     stat: path=/etc/resolvconf/resolv.conf.d/head
@@ -94,7 +98,7 @@
                 regexp='^nameserver 127.0.0.1'
                 insertbefore=BOF
                 line='nameserver 127.0.0.1'
-    when: resolv_conf_head.exists == True
+    when: resolv_conf_head.stat.exists == True
 
   - name: Configure dnsmasq for consul
     lineinfile:
