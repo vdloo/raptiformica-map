@@ -72,6 +72,30 @@
       --exists-action=w
     when: ansible_distribution != 'Ubuntu'
 
+  - name: Configure dnsmasq to use conf dir
+    lineinfile:
+      dest: /etc/dnsmasq.conf
+      line: conf-dir=/etc/dnsmasq.d
+      state: present
+      create: yes
+
+  - name: set 127.0.0.1 as first nameserver in resolv.conf
+    lineinfile: dest=/etc/resolv.conf
+                regexp='^nameserver 127.0.0.1'
+                insertbefore=BOF
+                line='nameserver 127.0.0.1'
+
+  - name: check if resolvconf head file exists on the system
+    stat: path=/etc/resolvconf/resolv.conf.d/head
+    register: resolv_conf_head
+
+  - name: set 127.0.0.1 as first nameserver in resolvconf head
+    lineinfile: dest=/etc/resolvconf/resolv.conf.d/head
+                regexp='^nameserver 127.0.0.1'
+                insertbefore=BOF
+                line='nameserver 127.0.0.1'
+    when: resolv_conf_head.exists == True
+
   - name: Configure dnsmasq for consul
     lineinfile:
       dest: /etc/dnsmasq.d/10-consul
