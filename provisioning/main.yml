@@ -3,6 +3,22 @@
   vars:
     ansible_python_interpreter: "/usr/bin/env python2"
   tasks:
+  - name: check if upstart system
+    stat: path=/usr/share/upstart
+    register: upstart_init_system
+
+  - name: check if systemd init system
+    stat: path=/usr/lib/systemd
+    register: systemd_init_system
+
+  - name: Disable nginx autostart on upstart machines before we ensure it is installed
+    command: touch /etc/init/nginx.override
+    when: upstart_init_system.stat.exists == True
+
+  - name: Disable nginx autostart on systemd machines before we ensure it is installed
+    command: ln -s /dev/null /etc/systemd/system/nginx.service
+    when: systemd_init_system.stat.exists == True
+
   - name: Ensure Debian-like OS dependencies are installed
     apt: name={{ item }} state=latest
     with_items:
@@ -17,6 +33,7 @@
     - pkg-config
     - screen
     - dnsmasq
+    - nginx
     when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
   - name: Ensure Archlinux dependencies are installed
@@ -30,6 +47,7 @@
     - pkg-config
     - screen
     - dnsmasq
+    - nginx
     when: ansible_distribution == 'Archlinux'
 
   - name: Install the raptiformica-map repository
@@ -112,7 +130,7 @@
 
   - name: Ensure consul service file for the webservice
     template:
-      src=consul_service_configuration.json
+      src=templates/consul_service_configuration.json
       dest=/etc/consul.d/raptiformica_map.json
     register: consul_service_registered
 
@@ -123,6 +141,11 @@
       -config-dir /etc/consul.d/' ||
       /bin/true
     when: consul_service_registered.changed
+
+  - name: Configure nginx to reverse proxy to the load-balanced DNS entry for the service
+    template:
+      src=templates/nginx.conf
+      dest=/etc/nginx/sites-enabled/default
 
   - name: Kill the service if it is running an old release
     # brackets so pkill does not terminate its own process
@@ -143,3 +166,9 @@
       screen -ls | grep -q dnsmasq ||
       screen -S dnsmasq -d -m
       /usr/sbin/dnsmasq --no-daemon
+
+  - name: Ensure detached nginx is running
+    shell: >
+      screen -ls | grep -q nginx ||
+      screen -S nginx -d -m
+      nginx -g 'daemon off;'
