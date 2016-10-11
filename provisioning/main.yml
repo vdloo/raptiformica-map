@@ -134,8 +134,8 @@
       screen -ls | grep -q raptiformica_map ||
       screen -S raptiformica_map -d -m
       bash -c 'PYTHONPATH=/usr/etc/raptiformica_map/
-      /usr/etc/raptiformica_map/venv/bin/python3
-      /usr/etc/raptiformica_map/raptiformica_map/web.py'
+      /usr/etc/raptiformica_map/venv/bin/gunicorn
+      --bind [::1]:3000 raptiformica_map.web:app
 
   # todo: refactor this to a supervisord script, not all hosts have an init system
   - name: Ensure detached dnsmasq is running
