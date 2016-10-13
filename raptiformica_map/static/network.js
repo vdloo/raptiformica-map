@@ -261,10 +261,25 @@ $(document).ready(function() {
         $('#number-of-connections').text(edges.length);
 
 
+        var selected = false;
         if (window.location.hash) {
             var id = window.location.hash.substring(1);
             var node = searchNode(id);
-            if (node) selectNode(node, false);
+            if (node) {
+                selectNode(node, false);
+                selected = true;
+            }
+        }
+
+        if (!selected) {
+            nodes_marked_as_self = nodes.filter(function (node) {
+                return node.is_self;
+            });
+            if (nodes_marked_as_self.length > 0) {
+                node = nodes_marked_as_self[0];
+                selectNode(node, false);
+                selected = true;
+            }
         }
 
         drawZoom(0, 0, 4);
