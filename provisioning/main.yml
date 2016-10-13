@@ -33,7 +33,21 @@
     - pkg-config
     - screen
     - dnsmasq
-    - nginx
+    - locate
+    - git
+    - cmake
+    - build-essential
+    - checkinstall
+    - autoconf
+    - pkg-config
+    - libtool
+    - python-sphinx
+    - wget
+    - libcunit1-dev
+    - nettle-dev
+    - libyaml-dev
+    - libuv-dev
+
     when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
   - name: Ensure Archlinux dependencies are installed
@@ -47,7 +61,14 @@
     - pkg-config
     - screen
     - dnsmasq
-    - nginx
+    - make
+    - cmake
+    - zlib
+    - ruby
+    - cunit
+    - nette
+    - libuv
+    - libyaml
     when: ansible_distribution == 'Archlinux'
 
   - name: Install the raptiformica-map repository
@@ -89,6 +110,101 @@
       install pygraphviz==1.3.1
       --exists-action=w
     when: ansible_distribution != 'Ubuntu'
+
+  - name: install the h2o artifact if we can
+    shell: >
+      [ -f ~/.raptiformica.d/artifacts/$(uname -m)/h2o/h2o ] &&
+      (mkdir -p /usr/local/h2o/bin/ &&
+      cp -f ~/.raptiformica.d/artifacts/$(uname -m)/h2o/h2o /usr/local/h2o/bin/) ||
+      /bin/true
+
+  - name: check if h2o installed
+    stat: path=/usr/local/h2o/bin/h2o
+    register: h2o
+
+  - name: Install wslay repository (for h2o)
+    git: repo=https://github.com/tatsuhiro-t/wslay.git
+      dest=/usr/etc/wslay
+      version=master
+      force=yes
+      update=yes
+    when: h2o.stat.exists == False
+
+  - name: Install h2o repository
+    git: repo=https://github.com/h2o/h2o.git
+      dest=/usr/etc/h2o
+      version=master
+      force=yes
+      update=yes
+    when: h2o.stat.exists == False
+
+  - name: autoreconf wslay
+    command: autoreconf -i
+    args:
+      chdir: /usr/etc/wslay
+    when: h2o.stat.exists == False
+
+  - name: automake wslay
+    command: automake
+    args:
+      chdir: /usr/etc/wslay
+    when: h2o.stat.exists == False
+
+  - name: autoconf wslay
+    command: autoconf
+    args:
+      chdir: /usr/etc/wslay
+    when: h2o.stat.exists == False
+
+  - name: configure wslay
+    shell: ./configure
+    args:
+      chdir: /usr/etc/wslay
+    when: h2o.stat.exists == False
+
+  - name: make wslay
+    command: make
+    args:
+      chdir: /usr/etc/wslay
+    when: h2o.stat.exists == False
+
+  - name: install wslay
+    command: make install
+    args:
+      chdir: /usr/etc/wslay
+    when: h2o.stat.exists == False
+
+  - name: cmake h2o
+    command: cmake -DCMAKE_INSTALL_PREFIX=/usr/local/h2o
+    args:
+      chdir: /usr/etc/h2o
+    when: h2o.stat.exists == False
+
+  - name: make h2o
+    command: make
+    args:
+      chdir: /usr/etc/h2o
+    when: h2o.stat.exists == False
+
+  - name: install h2o
+    shell: make install
+    args:
+      chdir: /usr/etc/h2o
+    when: h2o.stat.exists == False
+
+  - name: make sure there is an artifacts directory for h2o for this arch
+    shell: mkdir -p ~/.raptiformica.d/artifacts/$(uname -m)/h2o/
+
+  - name: copy compiled h2o to raptiformica artifacts for this arch
+    shell: cp -f /usr/local/h2o/bin/h2o ~/.raptiformica.d/artifacts/$(uname -m)/h2o/
+
+  - name: Ensure h2o config directory exists
+    file: path=/etc/h2o state=directory
+
+  - name: Configure h2o to reverse proxy to the load-balanced DNS entry for the service
+    template:
+      src=templates/h2o.conf
+      dest=/etc/h2o/h2o.conf
 
   - name: Configure dnsmasq to use conf dir
     lineinfile:
@@ -142,11 +258,6 @@
       /bin/true
     when: consul_service_registered.changed
 
-  - name: Configure nginx to reverse proxy to the load-balanced DNS entry for the service
-    template:
-      src=templates/nginx.conf
-      dest=/etc/nginx/sites-enabled/default
-
   - name: Kill the service if it is running an old release
     # brackets so pkill does not terminate its own process
     shell: pkill -f [r]aptiformica_map || /bin/true
@@ -167,8 +278,8 @@
       screen -S dnsmasq -d -m
       /usr/sbin/dnsmasq --no-daemon
 
-  - name: Ensure detached nginx is running
+  - name: Ensure detached h2o is running
     shell: >
-      screen -ls | grep -q nginx ||
-      screen -S nginx -d -m
-      nginx -g 'daemon off;'
+      screen -ls | grep -q h2o ||
+      screen -S h2o -d -m
+      /usr/local/h2o/bin/h2o -c /etc/h2o/h2o.conf
