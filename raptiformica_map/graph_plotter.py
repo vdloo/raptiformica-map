@@ -91,7 +91,7 @@ def get_graph_json(G):
             ),
             'size': size,
             'centrality': '%.4f' % centrality,
-            'self': n.name == own_ipv6_address,
+            'is_self': n.name == own_ipv6_address,
         })
 
     for e in G.iteredges():
