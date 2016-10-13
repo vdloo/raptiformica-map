@@ -4,6 +4,8 @@ import json
 import networkx as nx
 from networkx.algorithms import centrality
 
+from raptiformica_map.utils import load_json
+
 
 def position_nodes(nodes, edges):
     graph = pgv.AGraph(strict=True, directed=False, size='10!')
@@ -67,6 +69,8 @@ def get_graph_json(G):
     centralities = compute_betweenness(G)
     db = load_db()
 
+    own_ipv6_address = load_json('/etc/cjdroute.conf')['ipv6']
+
     for n in G.iternodes():
         neighbor_ratio = len(G.neighbors(n)) / float(max_neighbors)
         pos = n.attr['pos'].split(',', 1)
@@ -86,7 +90,8 @@ def get_graph_json(G):
                 neighbor_ratio, [(100, 100, 100), (0, 0, 0)]
             ),
             'size': size,
-            'centrality': '%.4f' % centrality
+            'centrality': '%.4f' % centrality,
+            'self': n.name == own_ipv6_address,
         })
 
     for e in G.iteredges():
