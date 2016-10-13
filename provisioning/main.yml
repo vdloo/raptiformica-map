@@ -3,22 +3,6 @@
   vars:
     ansible_python_interpreter: "/usr/bin/env python2"
   tasks:
-  - name: check if upstart system
-    stat: path=/usr/share/upstart
-    register: upstart_init_system
-
-  - name: check if systemd init system
-    stat: path=/usr/lib/systemd
-    register: systemd_init_system
-
-  - name: Disable nginx autostart on upstart machines before we ensure it is installed
-    command: touch /etc/init/nginx.override
-    when: upstart_init_system.stat.exists == True
-
-  - name: Disable nginx autostart on systemd machines before we ensure it is installed
-    command: ln -s /dev/null /etc/systemd/system/nginx.service
-    when: systemd_init_system.stat.exists == True
-
   - name: Ensure Debian-like OS dependencies are installed
     apt: name={{ item }} state=latest
     with_items:
