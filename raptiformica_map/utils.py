@@ -1,3 +1,6 @@
+import json
+
+
 def endswith(suffix):
     """
     Create a function that checks if the argument
@@ -22,3 +25,13 @@ def startswith(prefix):
     def string_starts_with(string):
         return str.startswith(string, prefix)
     return string_starts_with
+
+
+def load_json(json_file):
+    """
+    Parse a json config file and return the data as a dict
+    :param str json_file: path to the .json config file
+    :return dict: the data from the config file
+    """
+    with open(json_file, 'r') as stream:
+        return json.load(stream)
