@@ -3,12 +3,29 @@ from hashlib import md5
 from contextlib import suppress
 from urllib.error import HTTPError
 
-from raptiformica_map.database.consul.serializer import insert_dict, download_dict, KEY_VALUE_PATH
+from consul_kv import Connection
+from flask import Config
+from os.path import join, dirname, realpath
+
 from raptiformica_map.graph import Node, Edge
 from raptiformica_map.utils import startswith
 
+PROJECT_DIR = join(dirname(dirname(dirname(realpath(__file__)))))
+
+app_config = Config(PROJECT_DIR)
+app_config.from_pyfile('settings.cfg')
+
+
+KEY_VALUE_ENDPOINT = app_config.get(
+    'CONSUL_KV_ENDPOINT', 'http://localhost:8500/v1/kv'
+)
+KEY_VALUE_PATH = app_config.get(
+    'CONSUL_KV_PATH', 'raptiformica_map'
+)
+
 
 class NodeDB(object):
+    conn = Connection(endpoint=KEY_VALUE_ENDPOINT)
 
     def __init__(self, config):
         pass
@@ -24,9 +41,8 @@ class NodeDB(object):
         hashed = md5("{},{}".format(from_ip, to_ip).encode('utf-8'))
         return hashed.hexdigest()
 
-    @staticmethod
-    def select_from_key_value(table, identifier):
-        data = download_dict()
+    def select_from_key_value(self, table, identifier):
+        data = self.conn.get_mapping()
         key_path = '{}/{}/{}/'.format(
             KEY_VALUE_PATH, table, identifier
         )
@@ -68,7 +84,7 @@ class NodeDB(object):
                 }
             }
         }
-        insert_dict(node_information)
+        self.conn.put_dict(node_information)
 
     def insert_edge(self, edge, uploaded_by):
         now = int(time.time())
@@ -86,7 +102,7 @@ class NodeDB(object):
                 }
             }
         }
-        insert_dict(edge_information)
+        self.conn.put_dict(edge_information)
 
     def insert_graph(self, nodes, edges, uploaded_by):
         for n in nodes.values():
@@ -95,9 +111,8 @@ class NodeDB(object):
         for e in edges:
             self.insert_edge(e, uploaded_by)
 
-    @staticmethod
-    def get_nodes(time_limit):
-        data = download_dict()
+    def get_nodes(self, time_limit):
+        data = self.conn.get_mapping()
         key_path = '{}/{}/'.format(
             KEY_VALUE_PATH, 'nodes'
         )
@@ -120,9 +135,8 @@ class NodeDB(object):
                 )
         return nodes
 
-    @staticmethod
-    def get_edges(nodes, time_limit):
-        data = download_dict()
+    def get_edges(self, nodes, time_limit):
+        data = self.conn.get_mapping()
         key_path = '{}/{}/'.format(
             KEY_VALUE_PATH, 'edges'
         )
