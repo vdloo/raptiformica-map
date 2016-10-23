@@ -74,13 +74,15 @@ class NodeDB(object):
         previous_data = self.get_node_by_ip(node.ip) or {}
         previous_time = previous_data.get('first_seen', now)
         node_information = {
-            'nodes': {
-                node.ip: {
-                    'ip': node.ip,
-                    'name': node.label,
-                    'version': node.version,
-                    'first_seen': previous_time or now,
-                    'last_seen': now,
+            KEY_VALUE_PATH: {
+                'nodes': {
+                    node.ip: {
+                        'ip': node.ip,
+                        'name': node.label,
+                        'version': node.version,
+                        'first_seen': previous_time or now,
+                        'last_seen': now,
+                    }
                 }
             }
         }
@@ -92,13 +94,15 @@ class NodeDB(object):
         previous_time = previous_data.get('first_seen', now)
 
         edge_information = {
-            'edges': {
-                self.encode_edge_ip_pair(edge.a.ip, edge.b.ip): {
-                    'from_ip': edge.a.ip,
-                    'to_ip': edge.b.ip,
-                    'first_seen': previous_time,
-                    'last_seen': now,
-                    'uploaded_by': uploaded_by
+            KEY_VALUE_PATH: {
+                'edges': {
+                    self.encode_edge_ip_pair(edge.a.ip, edge.b.ip): {
+                        'from_ip': edge.a.ip,
+                        'to_ip': edge.b.ip,
+                        'first_seen': previous_time,
+                        'last_seen': now,
+                        'uploaded_by': uploaded_by
+                    }
                 }
             }
         }
