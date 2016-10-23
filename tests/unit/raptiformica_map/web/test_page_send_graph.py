@@ -18,7 +18,6 @@ class TestPageSendGraph(TestCase):
         )
         self.app = Mock()
         self.set_up_patch('raptiformica_map.web.app', self.app)
-        self.generate_graph = self.set_up_patch('raptiformica_map.web.generate_graph')
 
     def test_page_send_graph_inserts_graph_data(self):
         page_send_graph()
@@ -41,11 +40,6 @@ class TestPageSendGraph(TestCase):
             data=self.request.form['data'],
             version=1
         )
-
-    def test_page_send_graph_regenerates_graph(self):
-        page_send_graph()
-
-        self.generate_graph.assert_called_once_with()
 
     def test_page_send_graph_returns_OK_if_no_error(self):
         self.insert_graph_data.return_value = None
