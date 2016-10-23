@@ -7,6 +7,14 @@ class TestPageNetwork(TestCase):
         self.render_template = self.set_up_patch(
             'raptiformica_map.web.render_template'
         )
+        self.update_graph_if_graph_needs_to_be_updated = self.set_up_patch(
+            'raptiformica_map.web.update_graph_if_graph_needs_to_be_updated'
+        )
+
+    def test_page_network_updates_graph_if_graph_needs_to_be_updated(self):
+        page_network()
+
+        self.update_graph_if_graph_needs_to_be_updated.assert_called_once_with()
 
     def test_page_network_renders_network_template(self):
         page_network()

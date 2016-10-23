@@ -1,6 +1,8 @@
+from os.path import getctime, isfile
+from datetime import datetime, timedelta
 from flask import Flask, render_template, request
 from raptiformica_map.graph_data import insert_graph_data
-from raptiformica_map.update_graph import generate_graph
+from raptiformica_map.update_graph import generate_graph, GRAPH_FILE
 
 app = Flask(__name__)
 app.config.from_pyfile('settings.cfg')
@@ -17,9 +19,22 @@ def add_ip():
     }
 
 
+def update_graph_if_graph_needs_to_be_updated():
+    """
+    Update the graph if it needs to be (re)generated
+    :return None:
+    """
+    time_difference = datetime.now() - timedelta(seconds=10)
+    if not isfile(GRAPH_FILE) or datetime.fromtimestamp(
+        getctime('static/graph.json')
+    ) < time_difference:
+        generate_graph()
+
+
 @app.route('/')
 @app.route('/network')
 def page_network():
+    update_graph_if_graph_needs_to_be_updated()
     return render_template('network.html', page='network')
 
 
@@ -34,7 +49,6 @@ def page_send_graph():
         data=request.form['data'],
         version=version
     )
-    generate_graph()  # re-generate the graph with the new data
     return 'Error: {}'.format(ret) if ret else 'OK'
 
 if __name__ == '__main__':
