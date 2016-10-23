@@ -126,10 +126,13 @@ function clearNodes() {
     }
 }
 
-function selectNode(node, redraw) {
+function selectNode(node, redraw, set_hash) {
     clearNodes();
 
-    changeHash(node.id);
+    set_hash = typeof set_hash !== 'undefined' ? set_hash : true;
+    if (set_hash) {
+        changeHash(node.id);
+    }
 
     node.selected = true;
     showNodeInfo(node);
@@ -277,7 +280,7 @@ $(document).ready(function() {
             });
             if (nodes_marked_as_self.length > 0) {
                 node = nodes_marked_as_self[0];
-                selectNode(node, false);
+                selectNode(node, false, false);
                 selected = true;
             }
         }
