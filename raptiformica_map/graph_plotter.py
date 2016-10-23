@@ -52,6 +52,17 @@ def load_db():
         )
 
 
+def strip_leading_zeroes(ipv6_address):
+    """
+    Sometimes ipv6 addresses are stored without leaving zeroes in the segments.
+    To make sure we get the right matches when comparing addresses, always
+    strip zeroes
+    :param str ipv6_address: the ipv6 address to strip zeroes from
+    :return str stripped_ipv6_address: The stripped ipv6 address
+    """
+    return ipv6_address.replace(':0', ':')
+
+
 def get_graph_json(G):
     max_neighbors = 1
     for n in G.iternodes():
@@ -91,7 +102,7 @@ def get_graph_json(G):
             ),
             'size': size,
             'centrality': '%.4f' % centrality,
-            'is_self': n.name == own_ipv6_address,
+            'is_self': strip_leading_zeroes(n.name) == strip_leading_zeroes(own_ipv6_address),
         })
 
     for e in G.iteredges():
