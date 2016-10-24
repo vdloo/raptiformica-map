@@ -60,6 +60,8 @@ def strip_leading_zeroes(ipv6_address):
     :param str ipv6_address: the ipv6 address to strip zeroes from
     :return str stripped_ipv6_address: The stripped ipv6 address
     """
+    if ipv6_address[0] == '0':
+        ipv6_address = ipv6_address[1:]
     return ipv6_address.replace(':0', ':')
 
 
