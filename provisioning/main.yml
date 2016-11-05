@@ -50,7 +50,7 @@
     - zlib
     - ruby
     - cunit
-    - nette
+    - nettle
     - libuv
     - libyaml
     when: ansible_distribution == 'Archlinux'
