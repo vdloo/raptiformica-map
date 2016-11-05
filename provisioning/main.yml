@@ -250,21 +250,24 @@
   # todo: refactor this to a supervisord script, not all hosts have an init system
   - name: Ensure the detached webservice is running
     shell: >
-      screen -ls | grep -q raptiformica_map ||
+      screen -ls | grep -v Dead | grep -q raptiformica_map ||
       screen -S raptiformica_map -d -m
       bash -c 'PYTHONPATH=/usr/etc/raptiformica_map/
       /usr/etc/raptiformica_map/venv/bin/gunicorn
       --bind [::]:3000 raptiformica_map.web:app'
 
+  - name: Wipe dead screens
+    shell: screen -wipe || /bin/true
+
   # todo: refactor this to a supervisord script, not all hosts have an init system
   - name: Ensure detached dnsmasq is running
     shell: >
-      screen -ls | grep -q dnsmasq ||
+      screen -ls | grep -v Dead | grep -q dnsmasq ||
       screen -S dnsmasq -d -m
       /usr/sbin/dnsmasq --no-daemon
 
   - name: Ensure detached h2o is running
     shell: >
-      screen -ls | grep -q h2o ||
+      screen -ls | grep -v Dead | grep -q h2o ||
       screen -S h2o -d -m
       /usr/local/h2o/bin/h2o -c /etc/h2o/h2o.conf
