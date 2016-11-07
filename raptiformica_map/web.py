@@ -24,9 +24,9 @@ def update_graph_if_graph_needs_to_be_updated():
     Update the graph if it needs to be (re)generated
     :return None:
     """
-    time_difference = datetime.now() - timedelta(seconds=10)
+    time_difference = datetime.now() - timedelta(seconds=60)
     if not isfile(GRAPH_FILE) or datetime.fromtimestamp(
-        getctime('static/graph.json')
+        getctime(GRAPH_FILE)
     ) < time_difference:
         generate_graph()
 
