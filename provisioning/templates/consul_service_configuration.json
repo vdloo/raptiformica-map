@@ -1,7 +1,7 @@
 {
   "service": 
   {
-    "name": "raptiformica_map", 
+    "name": "raptiformicamap",
     "port": 3000
   }
 }
