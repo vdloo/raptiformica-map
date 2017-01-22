@@ -68,7 +68,7 @@
     pip:
       requirements=/usr/etc/raptiformica_map/requirements/base.txt
       virtualenv=/usr/etc/raptiformica_map/venv
-      virtualenv_command=pyvenv-3.4
+      virtualenv_command=pyvenv-3.5
     when: ansible_distribution == 'Ubuntu'
 
   - name: Install raptiformica-map requirements in the virtualenv
