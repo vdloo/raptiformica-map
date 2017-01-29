@@ -243,8 +243,12 @@
     when: consul_service_registered.changed
 
   - name: Kill the service if it is running an old release
-    # brackets so pkill does not terminate its own process
-    shell: pkill -f [r]aptiformica_map || /bin/true
+    # - brackets so pkill does not terminate its own process.
+    # - grep out any matching processes running in dockers
+    shell: >
+      ps aux | grep [r]aptiformica_map | awk '{print $2}' |
+      xargs --no-run-if-empty -I {} sh -c "grep -q docker /proc/{}/cgroup ||
+      kill {}" || /bin/true
 
   # todo: refactor this to a supervisord script, not all hosts have an init system
   - name: Ensure the detached webservice is running
