@@ -4,7 +4,7 @@ var nodes = [];
 var edges = [];
 var canvas = null;
 var ctx = null;
-var mapOffset = {x: 0, y: 0};
+var mapOffset = {x: 50, y: 50};
 var zoom = 1.0;
 
 function changeHash(hash) {
@@ -78,8 +78,29 @@ function drawNetwork() {
     }
 }
 
+function moveNodesIntoView() {
+    var smallest_x = 0;
+    var smallest_y = 0;
+
+    for (var i = 0; i < nodes.length; ++i) {
+        var node = nodes[i];
+        if (node.x < smallest_x) {
+            smallest_x = node.x;
+        }
+        if (node.y < smallest_y) {
+            smallest_y = node.y;
+        }
+    }
+    for (var i = 0; i < nodes.length; ++i) {
+        var node = nodes[i];
+        node.x -= smallest_x;
+        node.y -= smallest_y;
+    }
+}
+
 function drawZoom(mx, my, ratio) {
     zoom *= ratio;
+
 
     for (var i = 0; i < nodes.length; ++i) {
         var node = nodes[i];
@@ -87,6 +108,7 @@ function drawZoom(mx, my, ratio) {
         node.y = (node.y - my) * ratio + my;
         node.radius = (node.size) * zoom;
     }
+
 
     drawNetwork();
 }
@@ -213,6 +235,8 @@ $(document).ready(function() {
         nodes = data.nodes;
         edges = data.edges;
 
+        moveNodesIntoView();
+
         // Calculate node radiuses
         for (var i = 0; i < nodes.length; ++i) {
             var node = nodes[i];
@@ -285,7 +309,7 @@ $(document).ready(function() {
             }
         }
 
-        drawZoom(0, 0, 4);
+        drawZoom(0, 0, 3);
 
         $(window).resize(function() {
             updateCanvasSize();
