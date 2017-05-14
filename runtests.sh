@@ -30,7 +30,7 @@ test_script="
 "
 
 if [ -z $RUN_ONCE ]; then
-    LC_NUMERIC="en_US.UTF-8" watch -c -- "$test_cmd"
+    LC_NUMERIC="en_US.UTF-8" watch -c -- "$test_script"
 else
-    sh -ec "$test_script"
+    sh -c "$test_script"
 fi
