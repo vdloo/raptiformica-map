@@ -66,9 +66,13 @@
       virtualenv_command=pyvenv-3.5
     when: ansible_distribution == 'Ubuntu'
 
+  - name: Check if venv already exists
+    stat: path=/usr/etc/raptiformica_map/venv
+    register: manual_venv
+
   - name: Manually create python 3.4 venv on Debian
     command: virtualenv-3.4 -p python3.4 /usr/etc/raptiformica_map/venv
-    when: ansible_distribution == 'Debian'
+    when: ansible_distribution == 'Debian' and not manual_venv.stat.exists
 
   - name: Install raptiformica_map requirements in the virtualenv on Debian
     pip:
