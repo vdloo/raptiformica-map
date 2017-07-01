@@ -37,7 +37,6 @@
     - python
     - python-virtualenv
     - python-sphinx
-    - libmysqlclient
     - graphviz
     - pkg-config
     - dnsmasq
