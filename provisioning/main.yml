@@ -51,7 +51,8 @@
     when: ansible_distribution == 'Archlinux'
 
   - name: Install the raptiformica-map repository
-    git: repo=https://github.com/vdloo/raptiformica-map.git
+    git: 
+      repo=https://github.com/vdloo/raptiformica-map.git
       dest=/usr/etc/raptiformica_map
       version=master
       force=yes
@@ -113,7 +114,8 @@
     register: h2o
 
   - name: Install wslay repository (for h2o)
-    git: repo=https://github.com/tatsuhiro-t/wslay.git
+    git: 
+      repo=https://github.com/tatsuhiro-t/wslay.git
       dest=/usr/etc/wslay
       version=master
       force=yes
@@ -121,7 +123,8 @@
     when: h2o.stat.exists == False
 
   - name: Install h2o repository
-    git: repo=https://github.com/h2o/h2o.git
+    git: 
+      repo=https://github.com/h2o/h2o.git
       dest=/usr/etc/h2o
       version=master
       force=yes
