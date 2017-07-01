@@ -15,10 +15,8 @@
     - graphviz
     - libgraphviz-dev
     - pkg-config
-    - screen
     - dnsmasq
     - locate
-    - git
     - cmake
     - build-essential
     - checkinstall
@@ -26,7 +24,6 @@
     - pkg-config
     - libtool
     - python-sphinx
-    - wget
     - libcunit1-dev
     - nettle-dev
     - libyaml-dev
@@ -43,7 +40,6 @@
     - libmysqlclient
     - graphviz
     - pkg-config
-    - screen
     - dnsmasq
     - make
     - cmake
