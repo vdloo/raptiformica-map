@@ -2,7 +2,9 @@
 
 # Install bootstrap dependencies on Debian-like machines
 if type apt-get > /dev/null 2>&1; then
-    apt-get install python3 python-apt python3-dev ansible -y
+    apt-get install python3 python-apt python3-dev -y
+    apt-get purge ansible -y
+    pip install ansible
     ansible-playbook provisioning/main.yml --connection=local --connection=local -i '127.0.0.1,' -vvv
 fi;
 
