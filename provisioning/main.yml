@@ -198,7 +198,7 @@
     file: path=/etc/h2o state=directory
 
   - name: Configure h2o to reverse proxy to the load-balanced DNS entry for the service
-    file:
+    copy:
       src=files/h2o.conf
       dest=/etc/h2o/h2o.conf
 
@@ -241,19 +241,19 @@
     file: path=/etc/consul.d state=directory
 
   - name: Ensure consul service file for the webservice
-    file:
+    copy:
       src=files/web_service_configuration.json
       dest=/etc/consul.d/raptiformica_map_web.json
     register: web_check_registered
 
   - name: Ensure consul service file for the reverse proxy
-    file:
+    copy:
       src=files/proxy_service_configuration.json
       dest=/etc/consul.d/raptiformica_map.json
     register: proxy_check_registered
 
   - name: Ensure consul dns config file for short ttl
-    file:
+    copy:
       src=files/raptiformica_map_dns_config.json
       dest=/etc/consul.d/raptiformica_map_dns_config.json
     register: dns_conf_registered
