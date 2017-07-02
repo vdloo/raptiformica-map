@@ -1,0 +1,15 @@
+{
+  "check": {
+    "id": "raptiformica_map_web",
+    "name": "raptiformica_map_web",
+    "service_id": "raptiformica_map_web",
+    "http": "http://localhost:3000",
+    "interval": "10s",
+    "timeout": "5s"
+  },
+  "service":
+  {
+    "name": "raptiformica_map_web"
+  }
+}
+

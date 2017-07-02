@@ -242,7 +242,13 @@
 
   - name: Ensure consul service file for the webservice
     template:
-      src=templates/consul_service_configuration.json
+      src=templates/web_service_configuration.json
+      dest=/etc/consul.d/raptiformica_map_web.json
+    register: consul_service_registered
+
+  - name: Ensure consul service file for the reverse proxy
+    template:
+      src=templates/proxy_service_configuration.json
       dest=/etc/consul.d/raptiformica_map.json
     register: consul_service_registered
 
