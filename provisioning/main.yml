@@ -244,13 +244,19 @@
     file:
       src=files/web_service_configuration.json
       dest=/etc/consul.d/raptiformica_map_web.json
-    register: consul_service_registered
+    register: web_check_registered
 
   - name: Ensure consul service file for the reverse proxy
     file:
       src=files/proxy_service_configuration.json
       dest=/etc/consul.d/raptiformica_map.json
-    register: consul_service_registered
+    register: proxy_check_registered
+
+  - name: Ensure consul dns config file for short ttl
+    file:
+      src=files/raptiformica_map_dns_config.json
+      dest=/etc/consul.d/raptiformica_map_dns_config.json
+    register: dns_conf_registered
 
   - name: Reload consul agent if it is running
     shell: >
@@ -258,7 +264,7 @@
       -f '^/usr/bin/consul agent
       -config-dir /etc/consul.d/' ||
       /bin/true
-    when: consul_service_registered.changed
+    when: web_check_registered.changed or proxy_check_registered.changed or dns_conf_registered.changed
 
   - name: Kill the service if it is running an old release
     # - brackets so pkill does not terminate its own process.
