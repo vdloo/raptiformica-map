@@ -1,0 +1,9 @@
+{
+  "dns_config": {
+    "service_ttl": {
+      "raptiformica_map": "1s",
+      "raptiformica_map_web": "1s"
+    }
+  }
+}
+
