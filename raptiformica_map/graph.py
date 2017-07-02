@@ -43,6 +43,6 @@ def valid_cjdns_ip(ip):
 
 def valid_version(version):
     try:
-        return int(version) < 20
+        return int(version) < 30
     except ValueError:
         return False
