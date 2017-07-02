@@ -1,0 +1,23 @@
+{
+  "check": {
+    "id": "raptiformica_map",
+    "name": "raptiformica_map",
+    "service_id": "raptiformica_map",
+    "tcp": "localhost:80",
+    "interval": "10s",
+    "timeout": "1s"
+  },
+  "service":
+  {
+    "name": "raptiformica_map",
+    "port": 80,
+    "checks": [
+        {
+            "http": "http://raptiformica_map.service.consul",
+            "interval": "10s",
+            "timeout": "5s"
+        }
+    ]
+  }
+}
+
