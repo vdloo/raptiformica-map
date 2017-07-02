@@ -12,7 +12,7 @@ fi;
 # Install bootstrap dependencies on Archlinux machines
 if type pacman > /dev/null 2>&1; then
     pacman -S python3 ansible --noconfirm --needed
-    /usr/bin/python3 `which ansible-playbook` provisioning/main.yml \
+    ansible-playbook provisioning/main.yml \
       --connection=local --connection=local -i '127.0.0.1,' \
       -e 'ansible_python_interpreter=/usr/bin/python3' -vvv
 fi;
