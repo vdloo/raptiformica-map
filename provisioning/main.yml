@@ -198,8 +198,8 @@
     file: path=/etc/h2o state=directory
 
   - name: Configure h2o to reverse proxy to the load-balanced DNS entry for the service
-    template:
-      src=templates/h2o.conf
+    file:
+      src=files/h2o.conf
       dest=/etc/h2o/h2o.conf
 
   - name: Configure dnsmasq to use conf dir
@@ -241,14 +241,14 @@
     file: path=/etc/consul.d state=directory
 
   - name: Ensure consul service file for the webservice
-    template:
-      src=templates/web_service_configuration.json
+    file:
+      src=files/web_service_configuration.json
       dest=/etc/consul.d/raptiformica_map_web.json
     register: consul_service_registered
 
   - name: Ensure consul service file for the reverse proxy
-    template:
-      src=templates/proxy_service_configuration.json
+    file:
+      src=files/proxy_service_configuration.json
       dest=/etc/consul.d/raptiformica_map.json
     register: consul_service_registered
 
