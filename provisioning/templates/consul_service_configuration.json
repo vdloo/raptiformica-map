@@ -1,10 +1,17 @@
 {
-  "service": 
+  "check": {
+    "id": "raptiformicamap-web",
+    "name": "raptiformicamap-web",
+    "service_id": "raptiformicamap",
+    "script": "GET http://localhost:3000 >/dev/null 2>&1",
+    "interval": "10s"
+  },
+  "service":
   {
     "name": "raptiformicamap",
     "port": 3000,
     "check":  {
-      "script": "GET http://localhost:3000 >/dev/null 2>&1",
+      "script": "GET http://localhost >/dev/null 2>&1",
       "interval": "10s"
     }
   }
