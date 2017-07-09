@@ -15,10 +15,6 @@
           "update_node_database": {
             "predicate": "ps aux | grep -q /usr/etc/[r]aptiformica_map/raptiformica_map/web.py",
             "command": "export PYTHONPATH=/usr/etc/raptiformica_map; /usr/etc/raptiformica_map/venv/bin/python3 /usr/etc/raptiformica_map/scripts/send_graph.py"
-          },
-          "ensure_reverse_proxy_to_raptiformica_map": {
-            "predicate": "/bin/true",
-            "command": "screen -ls | grep -q nginx || screen -S nginx -d -m nginx -g 'daemon off;'"
           }
         }
       }
