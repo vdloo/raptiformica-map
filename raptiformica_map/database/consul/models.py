@@ -17,7 +17,7 @@ app_config.from_pyfile('settings.cfg')
 
 
 KEY_VALUE_ENDPOINT = app_config.get(
-    'CONSUL_KV_ENDPOINT', 'http://localhost:8500/v1/kv'
+    'CONSUL_KV_ENDPOINT', 'http://localhost:8500/v1/'
 )
 KEY_VALUE_PATH = app_config.get(
     'CONSUL_KV_PATH', 'raptiformica_map'
