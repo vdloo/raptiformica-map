@@ -47,7 +47,7 @@
     - nettle
     - libuv
     - libyaml
-    when: ansible_distribution == 'Archlinux'
+    when: "'Arch Linux' in ansible_distribution"
 
   - name: Install the raptiformica-map repository
     git: 
@@ -85,7 +85,7 @@
       requirements=/usr/etc/raptiformica_map/requirements/base.txt
       virtualenv=/usr/etc/raptiformica_map/venv
       virtualenv_python=python3
-    when: ansible_distribution == 'Archlinux'
+    when: "'Arch Linux' in ansible_distribution"
 
   - name: Install pygraphviz for Ubuntu
     shell: >
