@@ -32,7 +32,7 @@ if type pacman > /dev/null 2>&1; then
     #     a = long(_hexlify(_urandom(2500)), 16)
     # OSError: [Errno 38] Function not implemented
     # ```
-    if ps a | grep -q com.android.phone; then
+    if ps a | grep -q [c]om.android.phone; then
         pip3 install ansible
         /usr/bin/python3 `which ansible-playbook` provisioning/main.yml \
           --connection=local --connection=local -i '127.0.0.1,' \
