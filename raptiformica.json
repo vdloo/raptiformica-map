@@ -4,7 +4,7 @@
     "headless": {
       "raptiformica_map": {
         "source": "https://github.com/vdloo/raptiformica-map",
-        "bootstrap": "/usr/bin/env screen -d -m bash deploy.sh"
+        "bootstrap": "./deploy.sh"
       }
     }
   },
