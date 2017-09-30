@@ -54,6 +54,8 @@
       repo=https://github.com/vdloo/raptiformica-map.git
       dest=/usr/etc/raptiformica_map
       version=master
+      recursive=no
+      depth=1
       force=yes
       update=yes
     register: raptiformica_map_git
@@ -121,6 +123,8 @@
       repo=https://github.com/tatsuhiro-t/wslay.git
       dest=/usr/etc/wslay
       version=master
+      recursive=no
+      depth=1
       force=yes
       update=yes
     when: h2o.stat.exists == False
@@ -130,6 +134,8 @@
       repo=https://github.com/h2o/h2o.git
       dest=/usr/etc/h2o
       version=master
+      recursive=no
+      depth=1
       force=yes
       update=yes
     when: h2o.stat.exists == False
