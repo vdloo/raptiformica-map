@@ -87,7 +87,7 @@
       requirements=/usr/etc/raptiformica_map/requirements/base.txt
       virtualenv=/usr/etc/raptiformica_map/venv
       virtualenv_python=python3
-    when: "'Arch Linux' in ansible_distribution"
+    when: "'Arch' in ansible_distribution"
 
   - name: Install pygraphviz for Ubuntu
     shell: >
