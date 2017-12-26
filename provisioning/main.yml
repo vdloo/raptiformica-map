@@ -120,9 +120,9 @@
 
   - name: Install wslay repository (for h2o)
     git: 
-      repo=https://github.com/tatsuhiro-t/wslay.git
+      repo=https://github.com/vdloo/wslay.git
       dest=/usr/etc/wslay
-      version=master
+      version=remove-examples-to-fix-invalid-conversion-errors
       recursive=no
       depth=1
       force=yes
