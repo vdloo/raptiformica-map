@@ -122,7 +122,7 @@
     git: 
       repo=https://github.com/vdloo/wslay.git
       dest=/usr/etc/wslay
-      version=remove-examples-to-fix-invalid-conversion-errors
+      version=master
       recursive=no
       depth=1
       force=yes
