@@ -5,7 +5,7 @@ set -e
 if type apt-get > /dev/null 2>&1; then
     apt-get install python3 python-apt python3-dev libffi-dev libssl-dev -y
     apt-get purge ansible -y || /bin/true
-    pip install ansible
+    pip install ansible==2.2.3.0
     ansible-playbook provisioning/main.yml --connection=local --connection=local -i '127.0.0.1,' -vvv
 fi;
 
