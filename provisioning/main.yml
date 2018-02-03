@@ -33,8 +33,7 @@
     apt: name={{ item }} state=latest
     with_items:
     - python3-venv
-    when: ansible_distribution_version != '14.04' and (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
-)
+    when: ansible_distribution_version != '14.04' and (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu')
 
   - name: Ensure Archlinux dependencies are installed
     pacman: name={{ item }} state=latest
