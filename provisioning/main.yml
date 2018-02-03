@@ -70,22 +70,22 @@
       requirements=/usr/etc/raptiformica_map/requirements/base.txt
       virtualenv=/usr/etc/raptiformica_map/venv
       virtualenv_command=pyvenv-3.5
-    when: ansible_distribution == 'Ubuntu'
+    when: ansible_distribution == 'Ubuntu' and ansible_distribution_version != '14.04'
 
   - name: Check if venv already exists
     stat: path=/usr/etc/raptiformica_map/venv
     register: manual_venv
 
-  - name: Manually create python 3 venv on Debian
+  - name: Manually create python 3 venv on Debian or Trusty
     command: virtualenv -p python3 /usr/etc/raptiformica_map/venv
-    when: ansible_distribution == 'Debian' and not manual_venv.stat.exists
+    when: (ansible_distribution == 'Debian' or (ansible_distribution == 'Ubuntu' and ansible_distribution_version == '14.04') and not manual_venv.stat.exists
 
-  - name: Install raptiformica_map requirements in the virtualenv on Debian
+  - name: Install raptiformica_map requirements in the virtualenv on Debian or Trusty
     pip:
       requirements=/usr/etc/raptiformica_map/requirements/base.txt
       virtualenv=/usr/etc/raptiformica_map/venv
       virtualenv_command=virtualenv
-    when: ansible_distribution == 'Debian'
+    when: ansible_distribution == 'Debian' or (ansible_distribution == 'Ubuntu' and ansible_distribution_version == '14.04') 
 
   - name: Install raptiformica-map requirements in the virtualenv
     pip:
