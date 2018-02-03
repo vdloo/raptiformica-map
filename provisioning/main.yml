@@ -273,10 +273,10 @@
     when: web_check_registered.changed or proxy_check_registered.changed or dns_conf_registered.changed
 
   - name: Kill the service if it is running an old release
-    # - brackets so pkill does not terminate its own process.
+    # - brackets so kill does not terminate its own process.
     # - grep out any matching processes running in dockers
     shell: >
-      ps aux | grep [r]aptiformica_map | awk '{print $2}' |
+      ps aux | grep "/usr/etc/[r]aptiformica_map/venv/bin/gunicorn" | awk '{print$2}' |
       xargs --no-run-if-empty -I {} sh -c "grep -q docker /proc/{}/cgroup ||
       kill {}" || /bin/true
 
