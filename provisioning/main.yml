@@ -78,7 +78,7 @@
 
   - name: Manually create python 3 venv on Debian or Trusty
     command: virtualenv -p python3 /usr/etc/raptiformica_map/venv
-    when: (ansible_distribution == 'Debian' or (ansible_distribution == 'Ubuntu' and ansible_distribution_version == '14.04') and not manual_venv.stat.exists
+    when: (ansible_distribution == 'Debian' or (ansible_distribution == 'Ubuntu' and ansible_distribution_version == '14.04')) and not manual_venv.stat.exists
 
   - name: Install raptiformica_map requirements in the virtualenv on Debian or Trusty
     pip:
