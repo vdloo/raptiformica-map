@@ -39,6 +39,8 @@ if type pacman > /dev/null 2>&1; then
           -e 'ansible_python_interpreter=/usr/bin/python3' -vvv
     else
         pacman -S python3 ansible --noconfirm --needed
+        # TODO: remove when https://github.com/ansible/ansible/issues/63077 is resolved
+        wget -O /usr/lib/python3.8/site-packages/ansible/modules/packaging/os/pacman.py https://raw.githubusercontent.com/ansible/ansible/v2.8.6/lib/ansible/modules/packaging/os/pacman.py
         ansible-playbook provisioning/main.yml \
           --connection=local --connection=local -i '127.0.0.1,' \
           -e 'ansible_python_interpreter=/usr/bin/python3' -vvv
