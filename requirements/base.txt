@@ -2,7 +2,7 @@ Flask==0.11.1
 mysqlclient==1.4.6
 networkx==1.11
 cjdns==0.2.4
-requests==2.11.1
+requests==2.20.0
 itsdangerous==0.24
 click==6.6
 Jinja2==2.8
