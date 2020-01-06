@@ -170,7 +170,7 @@
     when: h2o.stat.exists == False
 
   - name: make wslay
-    command: make
+    shell: make -j $(nproc)
     args:
       chdir: /usr/etc/wslay
     when: h2o.stat.exists == False
@@ -188,7 +188,7 @@
     when: h2o.stat.exists == False
 
   - name: make h2o
-    command: make
+    shell: make -j $(nproc)
     args:
       chdir: /usr/etc/h2o
     when: h2o.stat.exists == False
