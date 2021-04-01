@@ -42,6 +42,7 @@
     - python
     - python-virtualenv
     - python-sphinx
+    - python-mysqlclient
     - graphviz
     - pkg-config
     - dnsmasq
